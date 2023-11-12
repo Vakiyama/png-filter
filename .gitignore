@@ -6,10 +6,11 @@
 
 # Misc
 
-starter/
 myfile.zip
-unzipped/
-filtered/
+unzipped/*
+!unzipped/.gitkeep
+filtered/*
+!filtered/.gitkeep
 
 # Logs
 

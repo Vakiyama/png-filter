@@ -9,8 +9,10 @@ import {
 import { pipeline } from "stream";
 import { PNG } from "pngjs";
 import path from "path";
+import filterWithWorker from "./workers";
+import * as filters from "./filters";
 
-export type Filter = (this: PNG) => Buffer;
+export type Filter = keyof typeof filters;
 
 export function unzip(pathIn: string, pathOut: string): void {
     const zip = new AdmZip(pathIn);
@@ -43,8 +45,11 @@ function handlePngError(err: Error | null) {
 
 async function createFilterTransformStream(filter: Filter) {
     const pngTransform = new PNG({ filterType: 4 });
-    return pngTransform.on("parsed", function (this: PNG) {
-            const newData = filter.call(pngTransform);
+    return pngTransform.on("parsed", async function (this: PNG) {
+            const newData = await filterWithWorker(this.data, filter);
+            if (newData === undefined) {
+                throw new Error("Fatal: worker was potentially called from main thread");
+            }
             this.data = newData;
             this.pack()
         });

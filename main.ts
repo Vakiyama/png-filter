@@ -8,10 +8,9 @@ import {
     filterPNG,
     Filter,
 } from "./IOHandler";
-import filters from "./filters.ts";
+import * as filters from "./filters";
 
 const rl = readline.createInterface({ input: stdin, output: stdout });
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const zipFilePath = path.join(__dirname, "myfile.zip");
 const pathUnzipped = path.join(__dirname, "unzipped");
@@ -32,13 +31,12 @@ async function main(filter: Filter) {
 }
 
 function askForFilter() {
-    const availableFilters = Object.keys(filters).join("\n");
+    const filterKeys = Object.keys(filters);
+    const availableFilters = filterKeys.join("\n");
     console.log(`Available filters: \n${availableFilters}`);
     rl.question("Enter the name of the desired filter: ", async (answer: string) => {
-        // @ts-ignore
-        const filter = filters[answer];
-        if (filter) {
-            await main(filter);
+        if (filterKeys.includes(answer)) {
+            await main(answer as Filter);
             rl.close();
         } else {
             console.log("Invalid filter");
