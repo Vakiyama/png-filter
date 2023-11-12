@@ -3,13 +3,21 @@
 To install dependencies:
 
 ```bash
-bun install
+bun i
 ```
 
 To run:
 
 ```bash
-bun run main.ts
+bun main.ts
 ```
 
-This project was created using `bun init` in bun v0.5.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+If you'd like to use node, you can run this program with:
+
+```bash
+npx tsx main.ts
+```
+
+## Usage
+Add a myfile.zip to the root directory. This should be a zip file with PNGs only.
+Run the program and select your desired filter when prompted. Filtered images will be placed in the "filtered" folder.
