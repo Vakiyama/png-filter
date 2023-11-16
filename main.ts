@@ -20,10 +20,12 @@ async function main(filter: Filter) {
     try {
         unzip(zipFilePath, pathUnzipped);
         const paths = await readDir(pathUnzipped);
+        const promises = [];
         for (const dirPath of paths) {
             const outPath = path.join(pathProcessed, path.basename(dirPath));
-            await filterPNG(dirPath, outPath, filter);
+            promises.push(filterPNG(dirPath, outPath, filter));
         }
+        await Promise.all(promises);
         console.log("All files processed");
     } catch (err) {
         console.log(err);
