@@ -42,13 +42,15 @@ export function dithering(data: Buffer): Buffer {
 
         if (grayScale > 127) {
             newPixelValue = previousError === 0 ? 255 : grayScale - previousError;
-            previousError = grayScale - newPixelValue;
+            previousError = previousError === 0 ? grayScale - newPixelValue : 0;
         } else {
             newPixelValue = previousError === 0 ? 0 : grayScale + previousError;
-            previousError = grayScale - newPixelValue;
+            previousError = previousError === 0 ? grayScale + newPixelValue : 0;
         }
 
-        setRGBValues(data, i, newPixelValue);
+        data[i] = newPixelValue;
+        data[i + 1] = newPixelValue;
+        data[i + 2] = newPixelValue;
     }
 
     return data;
