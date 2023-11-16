@@ -10,6 +10,16 @@ export function grayScale(data: Buffer): Buffer {
     return data;
 }
 
+export function lark(data: Buffer): Buffer {
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.min(data[i] * 1.2, 255);
+        data[i + 1] = Math.min(data[i + 1] * 1.1, 255);
+        data[i + 2] = Math.min(data[i + 2] * 0.9, 255);
+    }
+
+    return data;
+}
+
 export function sepia(data: Buffer): Buffer {
     for (let i = 0; i < data.length; i += 4) {
         const newRed = 0.393 * data[i] + 0.769 * data[i + 1] + 0.189 * data[i + 2];
