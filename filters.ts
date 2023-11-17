@@ -65,13 +65,3 @@ export function inverted(data: Buffer): Buffer {
 
     return data;
 }
-
-function setRGBValues(
-    data: Buffer,
-    i: number,
-    newValue: number,
-): void {
-    data[i] = newValue;
-    data[i + 1] = newValue;
-    data[i + 2] = newValue;
-}
